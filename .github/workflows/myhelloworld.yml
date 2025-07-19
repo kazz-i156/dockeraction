@@ -10,4 +10,4 @@ jobs:
       - name: Run my container action
         uses: ./
         with:
-          who-to-greet: 'GitHub User'
+          who-to-greet: 'World (Defined in workflow)'
