@@ -1,29 +1,10 @@
-name: Dump
-description: 
-  環境変数とgithubコンテクストをログへ出力。
-  ワークフローのデバッグに便利
+name: 'My Hello World Container Action'
+description: 'Prints Hello, World!'
 inputs:
-  enable-context:
-    default: 'true'
+  who-to-greet:
+    description: 'Person to greet'
     required: false
-    description: コンテクストをログ出力するか
-outputs:
-  dumped-date:
-    value: ${{ steps.current.outputs.date }}
-    description: ダンプ日時
+    default: 'World'
 runs:
-  # using: composite
-  using: docker
-  image: Dockerfile
-  steps:
-    - run: printenv | sort
-      shell: bash
-    - run: echo "${CONTEXT}"
-      if: ${{ inputs.enable-context == 'true' }}
-      env:
-        CONTEXT: ${{ toJSON(github) }}
-      shell: bash
-    - id: current
-      run: echo "date=$(date)">>"${GITHUB_OUTPUT}"
-      shell: bash
-
+  using: 'docker'
+  image: 'Dockerfile'
