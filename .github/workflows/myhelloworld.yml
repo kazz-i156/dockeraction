@@ -8,6 +8,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run my container action
-        uses: ./actions/
+        uses: ./
         with:
           who-to-greet: 'GitHub User'
