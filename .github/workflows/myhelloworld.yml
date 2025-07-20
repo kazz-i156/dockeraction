@@ -10,4 +10,10 @@ jobs:
       - name: Run my container action
         uses: ./.github/actions/myhelloworld
         with:
-          who-to-greet: '*** TARGET FILE ***'
+          who-to-greet: '*** TARGET STRINGS ***'
+
+      - name: Upload output
+        uses: actions/upload-artifact@v4
+        with:
+          name: hello-world-output
+          path: output.txt
