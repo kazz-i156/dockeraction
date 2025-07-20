@@ -4,7 +4,7 @@ inputs: # アクションの引数を定義
   who-to-greet:
     description: 'Person to greet'
     required: false
-    default: 'World' # デフォルト値を設定
+    default: 'world' # デフォルト値を設定
 runs:
   using: 'docker'
   image: 'Dockerfile' # Dockerfileを指定

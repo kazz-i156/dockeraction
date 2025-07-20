@@ -12,7 +12,7 @@ jobs:
       - name: Run my container action
         uses: ./.github/actions/myhelloworld # ローカルのアクションを使用
         with:
-          who-to-greet: '*** TARGET STRINGS ***' # ナントカ、に入れる引数
+          who-to-greet: 'World from PAS' # ナントカ、に入れる引数の文字列
 
       - name: Upload output # アクションの出力をアーティファクトとしてアップロード
         uses: actions/upload-artifact@v4
