@@ -10,7 +10,7 @@ git pushに反応し、Dockerコンテナを生成、日付と半固定テキス
 * Github-hosted runnerの他、Self-hosted runnerでも動作確認した。
 
 ## ファイル説明
-GitHub上でリモートリポジトリを作成し、それをローカル環境にcloneする。cloneして出来たディレクトリがリポジトリルートとなる。
+GitHub上でリモートリポジトリを作成し、それをローカル環境にcloneする。cloneして出来たディレクトリがリポジトリルートとなる。※もちろんこのリポジトリを直接cloneしても良い。
 
 例：~/dockeraction/
 

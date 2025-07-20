@@ -6,7 +6,8 @@ on: [push] # pushイベントでトリガー
 
 jobs:
   hello:
-    runs-on: self-hosted # Self-hosted runnerを使用
+    runs-on: ubuntu-latest # Github-hosted runnerを使用
+    # runs-on: self-hosted # Self-hosted runnerを使用
     steps:
       - uses: actions/checkout@v4
       - name: Run my container action
