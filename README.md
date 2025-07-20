@@ -6,17 +6,18 @@ git pushに反応し、Dockerコンテナを生成、日付と半固定テキス
 * 処理コンテナは`Dockerfile`に基づき生成
 * 処理本体はシェルスクリプト、`date`と`echo`を行うだけ
 * Hello, worldが基本だが、worldの部分は引数で与えられる。引数はワークフローファイル内に記述
-* 出力をアーティファクトにアップロード、そしてダウンロードして表示する所まで行う
-* Github-hosted runnerの他、Self-hosted runnerでも動作確認した。
+* 出力をアーティファクトとしてアップロード、そしてダウンロードして表示する所まで行う
+* Github-hosted runnerの他、Self-hosted runnerでも動作確認した
 
 ## ファイル説明
-GitHub上でリモートリポジトリを作成し、それをローカル環境にcloneする。cloneして出来たディレクトリがリポジトリルートとなる。※もちろんこのリポジトリを直接cloneしても良い。
+GitHub上でリモートリポジトリを作成し、それをローカル環境にcloneする。cloneして出来たディレクトリがリポジトリルートとなる。  
+※もちろんこのリポジトリを直接cloneしても良い。
 
 例：~/dockeraction/
 
 * ./REAMDE.md この説明文書
 * ./.github/workflows/myhelloworld.yml メインのワークフロー（ワークフローはこれ1本）ここからアクションを呼び出している
-    * `who-to-greet: 'World from PAS'`の部分で引数指定。ここに記述した文字列が、Hello, の後に付加される。
+    * `who-to-greet: 'World from hogehoge'`の部分で引数指定。ここに記述した文字列が、Hello, の後に付加される。
 * ./.github/actions/myhelloworld (注)
     * action.yml コンテナ生成、起動を司るアクション、本サンプルの肝の部分、引数の渡し方が少し面倒
     * Dockerfile コンテナ生成用ファイル、内部で`date`を使うので、タイムゾーンを設定している
@@ -35,16 +36,24 @@ entrypoint.shからは、`/github/workspace`以下に出力を書き込んでい
 アーティファクトはGitHubのウェブ画面からzip形式でダウンロードが可能  
 ※アーティファクトはGitHubクラウドに保管される。期限付き
 
-## Self-hosted runner
-myhelloworld.yml の中で下記記述を行うと自己ホストランナー指定になる  
-```
-runs-on: self-hosted
-```
-なお、GitHubホステッドのランナーの場合は下記
+## Self-hosted runner(自己ホストランナー)
+GitHub Actionsのジョブを自前(オンプレ)の環境で実行させる。設定は下記。
+
+myhelloworld.yml の中で
 ```
 runs-on: Ubuntu-latest
 ```
-Self-hosted-runnerはGitHubに繋がるマシンで(クライアントPCで良い)、**リポジトリごとに**設置する必要がある。
+と記述されている部分を
+```
+runs-on: self-hosted
+```
+に書き換える。
+
+Self-hosted runnerはインターネットを介してGitHubに繋がるマシンであれば良く、クライアントPCで良い。※GitHubサーバにhttpsでロングポーリングを行っている模様。
+
+但し、Self-hosted runnerのソフトウェアは**リポジトリごとに独立したディレクトリ配下**にインストールし、稼働させる必要がある。
+
+例：~/runner-dockeraction/
 
 設置手順は下記の通り
 1. GitHubで対象リポジトリを開く
@@ -52,12 +61,20 @@ Self-hosted-runnerはGitHubに繋がるマシンで(クライアントPCで良�
 3. Self-hosted runnersのタブを開き
 4. New runner→Create New Runner
 5. ランナーをWindowsで動かすかLinux(WSL可)で動かすかを決め、メニューから選択
-6. WindowsならPowershell、Linuxならbash等を開き、GitHubのウェブ画面上に記された手順通りにコマンドをコピペ実行する。※各行ごとにコピーボタンがあるのでそれを使えば簡単
-7. `./configure`の所で幾つか質問されるが、基本的に全てデフォルト(Enter)で良い。
+6. WindowsならPowershell、Linuxならbash等を開き、GitHubのウェブ画面上に記された手順通りにコマンドをコピペ実行する。※各行ごとにコピーボタンがあるのでそれを使えば簡単。但し1番目だけは、上記で自分で決めたユニークなディレクトリを指定する必要がある。
+    * 注1：手順をそのままコピーすると同じディレクトリ名になってしまい、複数のランナーを作れない
+    * 注2: ローカルリポジトリ(例：~/dockeraction)の下に作るのも一案だが、その場合`.gitignore`で除外しておかないと後々面倒な事になる
+7. `./configure`の所で幾つか質問されるが、基本的に全てデフォルト(Enter)で良い。全ての質問に答え終わるとコマンドプロンプトに戻るので、それを確認してから次のステップ(`./run.sh`)に進むこと。
 
 なお、アーティファクトの項で述べた
 `/github/workspace/`に対応するディレクトリは、  
-<ランナーディレクトリ>/<ワークディレクトリ>/<リポジトリ名>/<リポジトリ名>  
-と共有されていて、ここに出力されたファイル等はランナーのローカルファイルシステムに残り続ける。
+`<ランナーディレクトリ>/<ワークディレクトリ>/<リポジトリ名>/<リポジトリ名>`  
+と共有されていて、ここに出力されたファイル等はランナーのローカルファイルシステムから参照できる。
 
-例：~/runner-dockeraction/_work/dockeraction/dockeraction
+例：
+```
+cd ~/runner-dockeraction/_work/dockeraction/dockeraction
+cat output.txt
+```
+
+以上
