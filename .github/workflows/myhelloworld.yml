@@ -1,6 +1,8 @@
+# Helloナントカ、を、引数を入れてアーティファクトに格納＆出力する
+# ホストとコンテナ間のファイルやりとりは、/github/workspace/以下にて行う
 name: Run Hello World Action
 
-on: [push]
+on: [push] # pushイベントでトリガー
 
 jobs:
   hello:
@@ -8,23 +10,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run my container action
-        uses: ./.github/actions/myhelloworld
+        uses: ./.github/actions/myhelloworld # ローカルのアクションを使用
         with:
-          who-to-greet: '*** TARGET STRINGS ***'
+          who-to-greet: '*** TARGET STRINGS ***' # ナントカ、に入れる引数
 
-      - name: Upload output
+      - name: Upload output # アクションの出力をアーティファクトとしてアップロード
         uses: actions/upload-artifact@v4
         with:
           name: hello-world-output
           path: output.txt
 
-      - name: Download output
+      - name: Download output # アップロードしたアーティファクトをダウンロード
         uses: actions/download-artifact@v4
         with:
           name: hello-world-output
           path: ./download
         
-      - name: Show output (downloaded artifact contents)
+      - name: Show output (downloaded artifact contents) # アーティファクトを出力
         run: |
           echo "Output from the action:"
           cat ./download/output.txt

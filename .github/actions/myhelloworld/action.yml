@@ -1,12 +1,12 @@
 name: 'My Hello World Container Action'
 description: 'Prints Hello, World!'
-inputs:
+inputs: # アクションの引数を定義
   who-to-greet:
     description: 'Person to greet'
     required: false
-    default: 'World'
+    default: 'World' # デフォルト値を設定
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: 'Dockerfile' # Dockerfileを指定
   args:
-    - ${{ inputs.who-to-greet }}
+    - ${{ inputs.who-to-greet }} # 引数をコンテナに渡す
