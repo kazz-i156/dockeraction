@@ -9,6 +9,12 @@ git pushに反応し、Dockerコンテナを生成、日付と半固定テキス
 * 出力をアーティファクトとしてアップロード、そしてダウンロードして表示する所まで行う
 * Github-hosted runnerの他、Self-hosted runnerでも動作確認した
 
+## 検証環境
+* Windows 11 Pro 24H2
+* WSL2.4.13.0
+* Ubuntu 22.04.5 LTS
+* Docker Engine v28.0.4
+
 ## ファイル説明
 GitHub上でリモートリポジトリを作成し、それをローカル環境にcloneする。cloneして出来たディレクトリがリポジトリルートとなる。  
 ※もちろんこのリポジトリを直接cloneしても良い。
