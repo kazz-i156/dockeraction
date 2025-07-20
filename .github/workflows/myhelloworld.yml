@@ -17,3 +17,15 @@ jobs:
         with:
           name: hello-world-output
           path: output.txt
+
+      - name: Download output
+        uses: actions/download-artifact@v4
+        with:
+          name: hello-world-output
+          path: ./download
+        
+      - name: Show output (downloaded artifact contents)
+        run: |
+          echo "Output from the action:"
+          cat ./download/output.txt
+          echo "Action completed successfully!"
