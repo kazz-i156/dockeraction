@@ -23,7 +23,7 @@ GitHub上でリモートリポジトリをfork作成または新規作成し、�
 
 * ./REAMDE.md この説明文書
 * ./.github/workflows/myhelloworld.yml メインのワークフロー（ワークフローはこれ1本）ここからアクションを呼び出している
-    * `who-to-greet: 'World from hogehoge'`の部分で引数指定。ここに記述した文字列が、Hello, の後に付加される。
+    * `who-to-greet: 'World from hogehoge'`の部分で引数指定。ここに記述した文字列が、Hello の後に付加される。
 * ./.github/actions/myhelloworld (注)
     * action.yml コンテナ生成、起動を司るアクション、本サンプルの肝の部分、引数の渡し方が少し面倒
     * Dockerfile コンテナ生成用ファイル、内部で`date`を使うので、タイムゾーンを設定している
@@ -79,8 +79,10 @@ Self-hosted runnerはインターネットを介してGitHubに繋がるマシ�
 
 例：
 ```
-cd ~/runner-dockeraction/_work/dockeraction/dockeraction
-cat output.txt
+$ cd ~/runner-dockeraction/_work/dockeraction/dockeraction
+$ cat output.txt
+Sun Jul 20 17:09:46 JST 2025
+Hello World from hogehoge
 ```
 
 以上
