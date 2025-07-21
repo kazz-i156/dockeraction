@@ -1,11 +1,11 @@
 # Docker Container Actionのサンプル(独習)
 ## 概要
-git pushに反応し、Dockerコンテナを生成、日付と半固定テキストを出力する処理を作成した。
+git pushをトリガとし、Dockerコンテナを生成、日付と半固定テキストを出力する自動処理を実装した。
 * ワークフローは1本のみ
 * 処理の一部をアクションとして切り出している
 * 処理コンテナは`Dockerfile`に基づき生成
 * 処理本体はシェルスクリプト、`date`と`echo`を行うだけ
-* Hello, worldが基本だが、worldの部分は引数で与えられる。引数はワークフローファイル内に記述
+* `Hello world`が基本だが、`world`の部分は引数で与えられる。引数はワークフローファイル内に記述
 * 出力をアーティファクトとしてアップロード、そしてダウンロードして表示する所まで行う
 * Github-hosted runnerの他、Self-hosted runnerでも動作確認した
 
@@ -20,6 +20,21 @@ GitHub上でリモートリポジトリをfork作成または新規作成し、�
 ※もちろんこのリポジトリを直接cloneしても良い。
 
 例：~/dockeraction/
+
+フォルダ構成：
+```
+~/dockeraction$ tree -a -I .git
+.
+├── .github
+│   ├── actions
+│   │   └── myhelloworld
+│   │       ├── Dockerfile
+│   │       ├── action.yml
+│   │       └── entrypoint.sh
+│   └── workflows
+│       └── myhelloworld.yml
+└── README.md
+```
 
 * ./REAMDE.md この説明文書
 * ./.github/workflows/myhelloworld.yml メインのワークフロー（ワークフローはこれ1本）ここからアクションを呼び出している
@@ -56,8 +71,9 @@ runs-on: self-hosted
 に書き換える。
 
 Self-hosted runnerはインターネットを介してGitHubに繋がるマシンであれば良く、クライアントPCで良い。※GitHubサーバにhttpsでロングポーリングを行っている模様。
+但しDockerを動かすのでLinuxマシンである必要がある。Docker Engineをインストールしておく必要もある。
 
-但し、Self-hosted runnerのソフトウェアは**リポジトリごとに独立したディレクトリ配下**にインストールし、稼働させる必要がある。
+また、Self-hosted runnerのソフトウェアは**リポジトリごとに独立したディレクトリ配下**にインストールし、稼働させる必要がある。
 
 例：~/runner-dockeraction/
 
@@ -66,7 +82,7 @@ Self-hosted runnerはインターネットを介してGitHubに繋がるマシ�
 2. Actionタブ→左側のRunners
 3. Self-hosted runnersのタブを開き
 4. New runner→Create New Runner
-5. ランナーをWindowsで動かすかLinux(WSL可)で動かすかを決め、メニューから選択
+5. ランナーはLinuxで動かすので(WSL可)、メニューからLinuxを選択
 6. WindowsならPowershell、Linuxならbash等を開き、GitHubのウェブ画面上に記された手順通りにコマンドをコピペ実行する。※各行ごとにコピーボタンがあるのでそれを使えば簡単。但し1番目だけは、上記で自分で決めたユニークなディレクトリを指定する必要がある。
     * 注1：手順をそのままコピーすると同じディレクトリ名になってしまい、複数のランナーを作れない
     * 注2: ローカルリポジトリ(例：~/dockeraction)の下に作るのも一案だが、その場合`.gitignore`で除外しておかないと後々面倒な事になる
